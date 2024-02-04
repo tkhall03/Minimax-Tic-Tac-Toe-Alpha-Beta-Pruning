@@ -40,11 +40,11 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    possibleActions = [];
-    for idx in reversed(range(3)):
-        for itor in reversed(range(3)):
-            if(board[itor][idx] == None):
-                possibleActions.append((itor, idx));
+    possibleActions = {};
+    for idx in range(3):
+        for itor in range(3):
+            if(board[idx][itor] == None):
+                possibleActions.append((idx, itor));
     return possibleActions;
 
 
