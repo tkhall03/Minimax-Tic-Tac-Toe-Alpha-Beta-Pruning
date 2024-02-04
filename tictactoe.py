@@ -40,11 +40,11 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    possibleActions = {};
+    possibleActions = set();
     for idx in range(3):
         for itor in range(3):
             if(board[idx][itor] == None):
-                possibleActions.append((idx, itor));
+                possibleActions.add((idx, itor));
     return possibleActions;
 
 
@@ -121,8 +121,8 @@ def minimaxHelper(board, alpha, beta, prevMove):
 
 def maximize(board, alpha, beta, prevMove, actionsList):
     tempMax = (float('-inf'), (-1, -1));
-    for idx in range(len(actions(board))):
-        value = minimaxHelper(result(copy.deepcopy(board), actionsList[idx]), alpha, beta, actionsList[idx]);
+    for idx in actions(board):
+        value = minimaxHelper(result(copy.deepcopy(board), idx), alpha, beta, idx);
         if(value[0] > tempMax[0]):
             tempMax = value;
         alpha = max(alpha, tempMax[0]);
@@ -135,8 +135,8 @@ def maximize(board, alpha, beta, prevMove, actionsList):
 
 def minimize(board, alpha, beta, prevMove, actionsList):
     tempMin = (float('inf'), (-1, -1))
-    for idx in range(len(actions(board))):
-        value = minimaxHelper(result(copy.deepcopy(board), actionsList[idx]), alpha, beta, actionsList[idx]);
+    for idx in actions(board):
+        value = minimaxHelper(result(copy.deepcopy(board), idx), alpha, beta, idx);
         if(value[0] < tempMin[0]):
             tempMin = value;
         beta = min(beta, tempMin[0]);
