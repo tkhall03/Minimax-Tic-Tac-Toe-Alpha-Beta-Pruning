@@ -100,6 +100,8 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    if(terminal(board)):
+        return None;
     return minimaxHelper(board, float('-inf'), float('inf'), (-1, -1))[1];
 
 
