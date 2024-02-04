@@ -43,8 +43,8 @@ def actions(board):
     possibleActions = [];
     for idx in range(3):
         for itor in range(3):
-            if(board[itor][idx] == None):
-                possibleActions.append((itor, idx));
+            if(board[idx][itor] == None):
+                possibleActions.insert(0, (idx, itor));
     return possibleActions;
 
 
