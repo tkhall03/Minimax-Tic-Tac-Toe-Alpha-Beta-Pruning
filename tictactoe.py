@@ -43,8 +43,8 @@ def actions(board):
     possibleActions = [];
     for idx in range(3):
         for itor in range(3):
-            if(board[idx][itor] == None):
-                possibleActions.append((idx, itor));
+            if(board[itor][idx] == None):
+                possibleActions.append((itor, idx));
     return possibleActions;
 
 
@@ -53,6 +53,10 @@ def result(board, action):
     Returns the board that results from making move (i, j) on the board.
     """
     value = player(board);
+    if(action[0] > 2 or action[0] < 0 or action[1] > 2 or action[1] < 0):
+        raise Exception("Invalid Move, out of bounds");
+    if(board[action[0]][action[1]] != None):
+        raise Exception("Invalid Move, square already taken");
     board[action[0]][action[1]] = value;
     return board;
 
@@ -105,35 +109,39 @@ def minimax(board):
     return minimaxHelper(board, float('-inf'), float('inf'), (-1, -1))[1];
 
 
-
-
-
 def minimaxHelper(board, alpha, beta, prevMove):
     if(terminal(board)):
         return (utility(board), prevMove);
     actionsList = actions(board);
     if(player(board) == 'X'):
-        tempMax = (float('-inf'), (-1, -1));
-        for idx in range(len(actions(board))):
-            value = minimaxHelper(result(copy.deepcopy(board), actionsList[idx]), alpha, beta, actionsList[idx]);
-            if(value[0] > tempMax[0]):
-                tempMax = value;
-            alpha = max(alpha, tempMax[0]);
-            if(beta <= alpha):
-                break;
-        if(prevMove[0] != -1):
-            return (tempMax[0], prevMove);
-        return (tempMax[0], tempMax[1]);
+        return maximize(board, alpha, beta, prevMove, actionsList);
     else:
-        tempMin = (float('inf'), (-1, -1))
-        for idx in range(len(actions(board))):
-            value = minimaxHelper(result(copy.deepcopy(board), actionsList[idx]), alpha, beta, actionsList[idx]);
-            if(value[0] < tempMin[0]):
-                tempMin = value;
-            beta = min(beta, tempMin[0]);
-            if(beta < alpha):
-                break;
-        if(prevMove[0] != -1):
-            return (tempMin[0], prevMove);
-        return (tempMin[0], tempMin[1]);
+        return minimize(board, alpha, beta, prevMove, actionsList);
 
+
+def maximize(board, alpha, beta, prevMove, actionsList):
+    tempMax = (float('-inf'), (-1, -1));
+    for idx in range(len(actions(board))):
+        value = minimaxHelper(result(copy.deepcopy(board), actionsList[idx]), alpha, beta, actionsList[idx]);
+        if(value[0] > tempMax[0]):
+            tempMax = value;
+        alpha = max(alpha, tempMax[0]);
+        if(beta <= alpha):
+            break;
+    if(prevMove[0] != -1):
+        return (tempMax[0], prevMove);
+    return (tempMax[0], tempMax[1]);
+
+
+def minimize(board, alpha, beta, prevMove, actionsList):
+    tempMin = (float('inf'), (-1, -1))
+    for idx in range(len(actions(board))):
+        value = minimaxHelper(result(copy.deepcopy(board), actionsList[idx]), alpha, beta, actionsList[idx]);
+        if(value[0] < tempMin[0]):
+            tempMin = value;
+        beta = min(beta, tempMin[0]);
+        if(beta < alpha):
+            break;
+    if(prevMove[0] != -1):
+        return (tempMin[0], prevMove);
+    return (tempMin[0], tempMin[1]);
