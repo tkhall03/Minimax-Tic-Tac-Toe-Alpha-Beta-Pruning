@@ -113,14 +113,13 @@ def minimax(board):
 def minimaxHelper(board, alpha, beta, prevMove):
     if(terminal(board)):
         return (utility(board), prevMove);
-    actionsList = actions(board);
     if(player(board) == 'X'):
-        return maximize(board, alpha, beta, prevMove, actionsList);
+        return maximize(board, alpha, beta, prevMove);
     else:
-        return minimize(board, alpha, beta, prevMove, actionsList);
+        return minimize(board, alpha, beta, prevMove);
 
 
-def maximize(board, alpha, beta, prevMove, actionsList):
+def maximize(board, alpha, beta, prevMove):
     tempMax = (float('-inf'), (-1, -1));
     for idx in actions(board):
         value = minimaxHelper(result(board, idx), alpha, beta, idx);
@@ -134,7 +133,7 @@ def maximize(board, alpha, beta, prevMove, actionsList):
     return (tempMax[0], tempMax[1]);
 
 
-def minimize(board, alpha, beta, prevMove, actionsList):
+def minimize(board, alpha, beta, prevMove):
     tempMin = (float('inf'), (-1, -1))
     for idx in actions(board):
         value = minimaxHelper(result(board, idx), alpha, beta, idx);
